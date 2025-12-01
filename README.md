@@ -1,7 +1,7 @@
 # Whole Body Control（WBC）学习实践仓库
 
 ## 项目简介
-本仓库是笔者学习**全身控制（Whole Body Control, WBC）**时的学习笔记与实践工程，内容覆盖：
+本仓库是笔者学习全身控制(Whole Body Control, WBC)时的学习笔记与实践工程，内容覆盖：
 - WBC核心基础：雅可比矩阵、伪逆求解、任务优先级等理论的数学推导；
 - 应用场景：WBC在人形机器人领域的典型落地方向；
 - 实践练习：通过**3自由度机械臂**的任务实现，完成WBC入门实操，强化对基础知识的理解。
@@ -10,16 +10,18 @@
 ## 项目结构
 ```
 whole_body_control/
-├── config/ # 控制参数、机器人配置文件目录
-├── include/ # C++ 头文件目录（若包含 C++ 代码）
-├── launch/ # ROS 启动文件目录（一键启动机械臂 + 控制节点）
-├── msg/ # 自定义 ROS 消息类型目录
-├── scripts/ # WBC 核心控制逻辑（Python 脚本存放处，含学习笔记注释）
-├── src/ # C++ 源代码目录（若包含 C++ 控制逻辑）
-├── urdf/ # 3 自由度机械臂的 URDF 模型描述文件
-├── CMakeLists.txt # ROS 功能包编译配置文件
-├── package.xml # ROS 功能包信息配置（依赖、包名等）
-└── README.md # 项目说明文档
+├── config/                            # rviz配置文件
+├── include/                           #
+├── launch/                            # ROS 启动文件目录（一键启动机械臂 + 控制节点）
+├── msg/                               # 自定义 ROS 消息类型目录
+├── scripts/                           # WBC 核心控制逻辑
+├── src/                               # 
+├── WBC学习笔记.pdf                     # 
+├── WBC三自由度机械臂教程.pdf            # 
+├── urdf/                              # 3 自由度机械臂的 URDF 模型描述文件
+├── CMakeLists.txt                     # ROS 功能包编译配置文件
+├── package.xml                        # ROS 功能包信息配置
+└── README.md                          # 项目说明文档
 ```
 
 ## 环境依赖
