@@ -8,7 +8,7 @@
 
 
 ## 项目结构
-
+```
 whole_body_control/
 ├── config/ # 控制参数、机器人配置文件目录
 ├── include/ # C++ 头文件目录（若包含 C++ 代码）
@@ -20,11 +20,11 @@ whole_body_control/
 ├── CMakeLists.txt # ROS 功能包编译配置文件
 ├── package.xml # ROS 功能包信息配置（依赖、包名等）
 └── README.md # 项目说明文档
-
+```
 
 ## 环境依赖
 运行项目需提前配置以下环境：
-1. ROS版本：Noetic / Melodic（推荐Noetic，适配Python 3）
+1. ROS版本：ubuntu 20.04 Noetic 
 2. 依赖库：
    - Python 3
    - NumPy（安装命令：`pip install numpy`）
@@ -54,4 +54,5 @@ source devel/setup.bash
 
 ```bash
 运行
-roslaunch whole_body_control gazebo.launch```
+roslaunch whole_body_control gazebo.launch
+```
