@@ -1,0 +1,194 @@
+<?xml version="1.0"?>
+<robot name="my_arm" xmlns:xacro="http://wiki.ros.org/xacro">
+    <!-- 常量定义 -->
+    <xacro:property name="link_length" value="1.0" />
+    <xacro:property name="link_width" value="0.1" />
+    <xacro:property name="link_height" value="0.1" />
+    <xacro:property name="base_length" value="0.2"/>
+    
+    <!-- 惯性矩阵宏（补充完整，避免依赖外部文件缺失） -->
+    <xacro:macro name="Box_inertial_matrix" params="m l w h">
+        <inertial>
+            <mass value="${m}"/>
+            <inertia ixx="${m*(w*w + h*h)/12}" 
+                     ixy="0.0" ixz="0.0" 
+                     iyy="${m*(l*l + h*h)/12}" 
+                     iyz="0.0" 
+                     izz="${m*(l*l + w*w)/12}"/>
+        </inertial>
+    </xacro:macro>
+
+    <!-- 统一材质宏 -->
+    <material name="yellow">
+        <color rgba="0.5 0.3 0.0 1.0" />
+    </material>
+    <material name="gray">
+        <color rgba="0.2 0.2 0.2 1.0"/>
+    </material>
+    <material name="black">
+        <color rgba="0.0 0.0 0.0 1.0" />
+    </material>
+
+    <material name="red">
+        <color rgba="1.0 0.0 0.0 1.0" />
+    </material>
+
+    <material name="green">
+        <color rgba="0.0 1.0 0.0 1.0" />
+    </material>
+
+
+    <!-- 1. 添加dummy根连杆（无惯性，解决KDL警告） -->
+    <link name="dummy_root_link"/>
+
+    <!-- 2. 滑轨连杆：挂在dummy根连杆下 -->
+    <link name="Linear_rail">
+        <visual>
+            <geometry>
+                <box size="0.05 0.05 10"/>
+            </geometry>
+            <material name="gray"/>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.05 0.05 10"/>
+            </geometry>
+        </collision>
+        <xacro:Box_inertial_matrix m="1.0" l="0.05" w="0.05" h="10"/>
+    </link>
+    <!-- dummy根连杆与滑轨的固定关节 -->
+    <joint name="dummy_to_rail" type="fixed">
+        <parent link="dummy_root_link"/>
+        <child link="Linear_rail"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <!-- 3. 基座连杆 -->
+    <link name="base_link">
+        <visual>
+            <geometry>
+                <box size="${base_length} ${base_length} ${base_length}"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <material name="black"/>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="${base_length} ${base_length} ${base_length}"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+        </collision>
+        <xacro:Box_inertial_matrix m="0.1" l="${base_length}" w="${base_length}" h="${base_length}"/>
+    </link>
+
+    <!-- 滑动关节 -->
+    <joint name="slide_joint" type="prismatic">
+        <parent link="Linear_rail"/>
+        <child link="base_link" />
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <axis xyz="0 0 1"/> 
+        <limit lower="-5" upper="5" effort="100" velocity="2"/>
+    </joint>
+
+    <!-- 4. 机械臂连杆1（修正xyz表达式） -->
+    <link name="arm_link_1">
+        <visual>
+            <geometry>
+                <box size="${link_length} ${link_width} ${link_height}"/>
+            </geometry>
+            <!-- 修正：${-link_length/2} 让Xacro先计算出-0.5 -->
+            <origin xyz="${-link_length/2} 0 0" rpy="0 0 0" />
+            <material name="yellow"/>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="${link_length} ${link_width} ${link_height}"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+        </collision>
+        <xacro:Box_inertial_matrix m="0.1" l="${link_length}" w="${link_width}" h="${link_height}"/>
+    </link>
+
+    <!-- 5. 机械臂连杆2（修正xyz表达式） -->
+    <link name="arm_link_2">
+        <visual>
+            <geometry>
+                <box size="${link_length} ${link_width} ${link_height}"/>
+            </geometry>
+            <origin xyz="${-link_length/2} 0 0" rpy="0 0 0" />
+            <material name="red"/>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="${link_length} ${link_width} ${link_height}"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+        </collision>
+        <xacro:Box_inertial_matrix m="0.1" l="${link_length}" w="${link_width}" h="${link_height}"/>
+    </link>
+
+    <!-- 6. 机械臂连杆3（修正xyz表达式） -->
+    <link name="arm_link_3">
+        <visual>
+            <geometry>
+                <box size="${link_length} ${link_width} ${link_height}"/>
+            </geometry>
+            <origin xyz="${-link_length/2} 0 0" rpy="0 0 0" />
+            <material name="green"/>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="${link_length} ${link_width} ${link_height}"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+        </collision>
+        <xacro:Box_inertial_matrix m="0.1" l="${link_length}" w="${link_width}" h="${link_height}"/>
+    </link>
+
+    <!-- 旋转关节1 -->
+    <joint name="joint_1" type="revolute">
+        <parent link="base_link" />
+        <child link="arm_link_1" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <axis xyz="0 1 0"/>
+        <limit lower="-3.14" upper="3.14" effort="100" velocity="2"/>
+    </joint>
+
+    <!-- 旋转关节2 -->
+    <joint name="joint_2" type="revolute">
+        <parent link="arm_link_1" />
+        <child link="arm_link_2" />
+        <origin xyz="${-link_length} 0 0" rpy="0 0 0" />
+        <axis xyz="0 1 0"/>
+        <limit lower="-3.14" upper="3.14" effort="100" velocity="2"/>
+    </joint>
+
+    <!-- 旋转关节3 -->
+    <joint name="joint_3" type="revolute">
+        <parent link="arm_link_2" />
+        <child link="arm_link_3" />
+        <origin xyz="${-link_length} 0 0" rpy="0 0 0" />
+        <axis xyz="0 1 0"/>
+        <limit lower="-3.14" upper="3.14" effort="100" velocity="2"/>
+    </joint>
+
+    <!-- Gazebo/ros_control配置 -->
+    <gazebo_ros_control plugin_name="gazebo_ros_control"/>
+    <xacro:macro name="add_transmission" params="joint_name">
+        <transmission name="${joint_name}_trans">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="${joint_name}">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="${joint_name}_motor">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+    </xacro:macro>
+    <xacro:add_transmission joint_name="slide_joint"/>
+    <xacro:add_transmission joint_name="joint_1"/>
+    <xacro:add_transmission joint_name="joint_2"/>
+    <xacro:add_transmission joint_name="joint_3"/>
+
+</robot>
