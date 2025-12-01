@@ -36,18 +36,21 @@ whole_body_control/
 ```bash
 mkdir -p ~/catkin_ws/src
 cd ~/catkin_ws/src
+```
 
 2. **克隆仓库**
-git clone [你的仓库地址]
+git clone https://github.com/enffft/WBC-Tutorial.git
 
 编译工作空间
-bash
+```bash
 运行
 cd ~/catkin_ws
 catkin_make
 source devel/setup.bash  
+```
+
 启动 WBC 实践示例
 （假设launch目录下启动文件为wbc_3dof_arm.launch）
-bash
+```bash
 运行
-roslaunch whole_body_control wbc_3dof_arm.launch
+roslaunch whole_body_control gazebo.launch```
