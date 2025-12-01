@@ -8,7 +8,7 @@
 
 
 ## 项目结构
-本仓库为标准ROS功能包，目录结构及功能说明如下：
+
 whole_body_control/
 ├── config/ # 控制参数、机器人配置文件目录
 ├── include/ # C++ 头文件目录（若包含 C++ 代码）
@@ -39,9 +39,10 @@ cd ~/catkin_ws/src
 ```
 
 2. **克隆仓库**
+```bash
 git clone https://github.com/enffft/WBC-Tutorial.git
-
-编译工作空间
+```
+3.**编译工作空间**
 ```bash
 运行
 cd ~/catkin_ws
@@ -49,8 +50,8 @@ catkin_make
 source devel/setup.bash  
 ```
 
-启动 WBC 实践示例
-（假设launch目录下启动文件为wbc_3dof_arm.launch）
+4.**启动 WBC 实践示例**
+
 ```bash
 运行
 roslaunch whole_body_control gazebo.launch```
