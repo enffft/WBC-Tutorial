@@ -57,7 +57,6 @@ cd ~/catkin_ws/src
 git clone https://github.com/enffft/WBC-Tutorial.git
 ```
 3.**编译工作空间**
-运行
 ```bash
 cd ~/catkin_ws
 catkin_make
@@ -65,7 +64,6 @@ source devel/setup.bash
 ```
 
 4.**启动 WBC 实践示例**
-运行
 ```bash
 roslaunch whole_body_control gazebo.launch
 ```
