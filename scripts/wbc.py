@@ -38,6 +38,7 @@ class WholeBodyController:
             rospy.logwarn(f"joint_states数据不全：位置长度{len(msg.position)}，角速度长度{len(msg.velocity)}")
 
     def wbc_calculate(self):
+        # 将WBC的计算代码写在该函数中
         pass
     def no_wbc_calculate(self):
         """PD控制器+雅可比伪逆求解"""
@@ -113,8 +114,8 @@ class WholeBodyController:
         rospy.sleep(0.5)
         
         while not rospy.is_shutdown():
-            # self.no_wbc_calculate()
-            self.wbc_calculate()
+            self.no_wbc_calculate()
+            # self.wbc_calculate()
             self.pub_joint_cmd()
             self.rate.sleep()
 
